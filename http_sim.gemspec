@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'scaffold/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'scaffold'
-  spec.version       = Scaffold::VERSION
+  spec.version       = '0.0.1'
   spec.authors       = ['Jean de Klerk']
   spec.email         = ['jadekler@gmail.com']
   spec.summary       = 'Simulate your external HTTP integrations.'
