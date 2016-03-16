@@ -1,15 +1,5 @@
 require 'sinatra/base'
 
-def read_file(path)
-  lines = []
-  File.open(path, 'r') do |f|
-    f.each_line do |line|
-      lines.push line
-    end
-  end
-  lines.join
-end
-
 class Endpoint
   attr_reader :method, :path, :default_response, :response
   attr_accessor :requests
@@ -32,11 +22,26 @@ class Endpoint
 end
 
 module HttpSimulator
+  def self.read_file(path)
+    lines = []
+    File.open(path, 'r') do |f|
+      f.each_line do |line|
+        lines.push line
+      end
+    end
+    lines.join
+  end
+
+  @@erb_files = {
+    index: self.read_file('lib/index.html.erb'),
+    request: self.read_file('lib/request.html.erb'),
+    response: self.read_file('lib/response.html.erb')
+  }
   @@endpoints = []
 
   def self.run!
     Sinatra::Base.get '/' do
-      ERB.new(read_file('lib/index.html.erb')).result binding
+      ERB.new(@@erb_files[:index]).result binding
     end
 
     Class.new(Sinatra::Base) {
@@ -79,7 +84,7 @@ module HttpSimulator
     end
 
     Sinatra::Base.get "#{endpoint.path}/response" do
-      ERB.new(read_file('lib/response.html.erb')).result binding
+      ERB.new(@@erb_files[:response]).result binding
     end
 
     Sinatra::Base.put "#{endpoint.path}/response" do
@@ -91,7 +96,7 @@ module HttpSimulator
     end
 
     Sinatra::Base.get "#{endpoint.path}/requests" do
-      ERB.new(read_file('lib/request.html.erb')).result binding
+      ERB.new(@@erb_files[:request]).result binding
     end
 
     Sinatra::Base.delete "#{endpoint.path}/requests" do
