@@ -17,11 +17,15 @@ end
 module HttpSimulator
   @@endpoints = []
 
-  def self.register_endpoint(method, path, default_response)
-    @@endpoints.push(Endpoint.new(method, path, default_response))
+  def self.run!
+    Class.new(Sinatra::Base) {
+      include HttpSimulator
+    }.run!
   end
 
-  @@endpoints.each do |endpoint|
+  def self.register_endpoint(method, path, default_response)
+    endpoint = Endpoint.new(method, path, default_response)
+
     case endpoint.method
       when 'GET'
         Sinatra::Base.get endpoint.path do
