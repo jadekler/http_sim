@@ -30,6 +30,8 @@ HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_respons
 HttpSimulator.run!
 ```
 
+The endpoints `GET /hi` and `POST /bye` are not set up. Visit `/` to see an index of running simulators and their helpers.
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/scaffold/fork )
