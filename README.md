@@ -1,4 +1,4 @@
-# Scaffold
+# http_sim - Easy HTTP Simulators
 
 Simulate your external HTTP integrations.
 
