@@ -66,23 +66,25 @@ module HttpSimulator
         end
     end
 
-    Sinatra::Base.get "/#{endpoint.path}/response" do
-      "this is #{endpoint.path} get response"
+    Sinatra::Base.get "#{endpoint.path}/response" do
+      @endpoint = endpoint
+      ERB.new(read_file('lib/response.html.erb')).result binding
     end
 
-    Sinatra::Base.put "/#{endpoint.path}/response" do
-
-    end
-
-    Sinatra::Base.delete "/#{endpoint.path}/response" do
+    Sinatra::Base.put "#{endpoint.path}/response" do
 
     end
 
-    Sinatra::Base.get "/#{endpoint.path}/requests" do
+    Sinatra::Base.delete "#{endpoint.path}/response" do
 
     end
 
-    Sinatra::Base.delete "/#{endpoint.path}/requests" do
+    Sinatra::Base.get "#{endpoint.path}/requests" do
+      @endpoint = endpoint
+      ERB.new(read_file('lib/request.html.erb')).result binding
+    end
+
+    Sinatra::Base.delete "#{endpoint.path}/requests" do
 
     end
   end

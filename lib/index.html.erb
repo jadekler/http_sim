@@ -1,9 +1,40 @@
 <html>
-<head></head>
+<head>
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    td, th {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid gray;
+    }
+  </style>
+</head>
 <body>
-  Hello world
+<h2>Simulators</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Simulated endpoint</th>
+    <th>Response</th>
+    <th>Requests</th>
+  </tr>
+  </thead>
+  <tbody>
   <% @@endpoints.each do |endpoint| %>
-    <div>Hello <%= endpoint.path %></div>
+    <tr>
+      <td><%= endpoint.method %> <%= endpoint.path %></td>
+      <td><a href="<%= endpoint.path %>/response"><%= endpoint.path %>/response</a></td>
+      <td><a href="<%= endpoint.path %>/requests"><%= endpoint.path %>/requests</a></td>
+    </tr>
   <% end %>
+  </tbody>
+</table>
 </body>
 </html>
