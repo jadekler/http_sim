@@ -1,13 +1,15 @@
 # Scaffold
 
-TODO: Write a gem description
+Simulate your external HTTP integrations.
+
+**Contributions and issues very welcome**.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'scaffold'
+gem 'http_sim'
 ```
 
 And then execute:
@@ -16,11 +18,17 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install scaffold
+    $ gem install http_sim
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+require 'http_sim'
+
+HttpSimulator.register_endpoint 'GET', '/hi', read_file('fixtures/some_page.html')
+HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_response.json')
+HttpSimulator.run!
+```
 
 ## Contributing
 
