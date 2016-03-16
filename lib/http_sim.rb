@@ -1,5 +1,15 @@
 require 'sinatra/base'
 
+def read_file(path)
+  lines = []
+  File.open(path, 'r') do |f|
+    f.each_line do |line|
+      lines.push line
+    end
+  end
+  lines.join
+end
+
 class Endpoint
   attr_reader :method, :path, :default_response
 
@@ -18,13 +28,20 @@ module HttpSimulator
   @@endpoints = []
 
   def self.run!
+    Sinatra::Base.get '/' do
+      ERB.new(read_file('lib/index.html.erb')).result binding
+    end
+
     Class.new(Sinatra::Base) {
       include HttpSimulator
     }.run!
   end
 
   def self.register_endpoint(method, path, default_response)
+    raise '/ is a reserved path' if path == '/'
+
     endpoint = Endpoint.new(method, path, default_response)
+    @@endpoints.push endpoint
 
     case endpoint.method
       when 'GET'

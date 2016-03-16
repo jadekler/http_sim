@@ -1,0 +1,9 @@
+<html>
+<head></head>
+<body>
+  Hello world
+  <% @@endpoints.each do |endpoint| %>
+    <div>Hello <%= endpoint.path %></div>
+  <% end %>
+</body>
+</html>
