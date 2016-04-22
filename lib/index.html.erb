@@ -1,40 +1,48 @@
 <html>
-<head>
-  <style>
-    body {
-      padding: 20px;
-    }
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-    table {
-      border-collapse: collapse;
-    }
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
-    td, th {
-      padding: 10px;
-      text-align: left;
-      border: 1px solid gray;
-    }
-  </style>
-</head>
-<body>
-<h2>Simulators</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Simulated endpoint</th>
-    <th>Response</th>
-    <th>Requests</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @@endpoints.each do |endpoint| %>
-    <tr>
-      <td><%= endpoint.method %> <%= endpoint.path %></td>
-      <td><a href="<%= endpoint.path %>/response"><%= endpoint.path %>/response</a></td>
-      <td><a href="<%= endpoint.path %>/requests"><%= endpoint.path %>/requests</a></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-</body>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <style>
+      body {
+        padding: 20px;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      td, th {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Simulators</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Simulated endpoint</th>
+          <th>Response</th>
+          <th>Requests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @@endpoints.each do |endpoint| %>
+          <tr>
+            <td><%= endpoint.method %> <%= endpoint.path %></td>
+            <td><a href="<%= endpoint.path %>/response"><%= endpoint.path %>/response</a></td>
+            <td><a href="<%= endpoint.path %>/requests"><%= endpoint.path %>/requests</a></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
 </html>
