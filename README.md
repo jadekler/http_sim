@@ -1,5 +1,7 @@
 # http_sim - Easy HTTP Simulators
 
+[![Build Status](https://travis-ci.org/jadekler/http_sim.svg?branch=master)](https://travis-ci.org/jadekler/http_sim)
+
 Simulate your external HTTP integrations.
 
 **Contributions and issues very welcome**.
