@@ -9,13 +9,15 @@ Simulate your external HTTP integrations.
 1. Add `gem 'http_sim'` to your `Gemfile`
 1. `bundle install`
 1. 
-```ruby
-require 'http_sim'
-
-HttpSimulator.register_endpoint 'GET', '/hi', read_file('fixtures/some_page.html')
-HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_response.json')
-HttpSimulator.run!
-```
+    
+    ```ruby
+    require 'http_sim'
+    
+    HttpSimulator.register_endpoint 'GET', '/hi', read_file('fixtures/some_page.html')
+    HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_response.json')
+    HttpSimulator.run!
+    ```
+    
 1. The endpoints `GET /hi` and `POST /bye` are now set up. Visit `/` to see an index of running simulators and their helpers.
 
 ## Contributing
