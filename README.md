@@ -9,7 +9,6 @@ Simulate your external HTTP integrations.
 1. Add `gem 'http_sim'` to your `Gemfile`
 1. `bundle install`
 1. 
-    
     ```ruby
     require 'http_sim'
     
