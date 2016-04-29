@@ -51,6 +51,10 @@ module HttpSimulator
     }.run!
   end
 
+  def self.reset_endpoints
+    @@endpoints = []
+  end
+
   def self.register_endpoint(method, path, default_response)
     raise '/ is a reserved path' if path == '/'
 
