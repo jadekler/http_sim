@@ -6,7 +6,7 @@ Simulate your external HTTP integrations.
 
 **Contributions and issues very welcome**.
 
-## Usage
+## Standalone usage
 
 1. Add `gem 'http_sim'` to your `Gemfile`
 1. `bundle install`
@@ -21,6 +21,30 @@ Simulate your external HTTP integrations.
     ```
     
 1. The endpoints `GET /hi` and `POST /bye` are now set up. Visit `http://localhost:6565/` to see an index of running simulators and their helpers.
+
+## Test usage
+
+1. Add `gem 'http_sim'` to your `Gemfile`
+1. `bundle install`
+1. `some_spec.rb`:
+
+    ```ruby
+    describe 'some spec' do
+      before :each do
+        HttpSimulator.reset_endpoints
+        HttpSimulator.register_endpoint 'POST', '/some_simulated_endpoint', 'some_simulated_content'
+        HttpSimulator.run_daemon!(port: 6565)
+      end
+    
+      after :each do
+        HttpSimulator.stop_daemon!
+      end
+    
+      it 'does something that needs a simulator backing it' do
+        # your test here
+      end
+    end
+    ```
 
 ## Contributing
 
