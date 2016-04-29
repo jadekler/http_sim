@@ -1,2 +1,3 @@
 Version 0.0.1 http_sim is released
 Version 0.0.2 Allow changing port
+Version 0.0.3 Requests to endpoints are recorded and listed at endpoint's /request endpoint

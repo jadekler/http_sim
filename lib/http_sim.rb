@@ -98,6 +98,7 @@ module HttpSimulator
     end
 
     Sinatra::Base.get "#{endpoint.path}/requests" do
+      @endpoint = endpoint
       ERB.new(@@erb_files[:request]).result binding
     end
 
