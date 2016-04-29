@@ -6,14 +6,13 @@ describe '/<endpoint>/requests' do
   end
 
   after :each do
-    Process.kill('SIGKILL', @@pid)
+    HttpSimulator.stop_daemon!
   end
 
   it 'sets up a /request endpoint for each registered endpoint' do
     HttpSimulator.register_endpoint 'POST', '/hi', ''
     HttpSimulator.register_endpoint 'POST', '/bye', ''
-
-    start_simulator
+    HttpSimulator.run_daemon!(port: 6565)
 
     resp = HTTParty.get('http://localhost:6565/hi/requests')
     expect(resp.code).to eq 200
@@ -24,8 +23,7 @@ describe '/<endpoint>/requests' do
 
   it 'records requests at /requests endpoint' do
     HttpSimulator.register_endpoint 'POST', '/bye', 'byeeeee'
-
-    start_simulator
+    HttpSimulator.run_daemon!(port: 6565)
 
     HTTParty.post('http://localhost:6565/bye', :body => 'hello world')
 

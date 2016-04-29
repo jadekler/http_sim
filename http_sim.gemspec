@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'http_sim'
-  spec.version       = '0.0.3'
+  spec.version       = '0.0.4'
   spec.authors       = ['Jean de Klerk']
   spec.email         = ['jadekler@gmail.com']
   spec.summary       = 'Simulate your external HTTP integrations.'
@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'sinatra', '~> 1.4.0'
+  spec.add_runtime_dependency 'httparty', '~> 0.13.7'
   spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'httparty', '~> 0.13.7'
 end

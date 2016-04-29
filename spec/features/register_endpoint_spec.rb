@@ -6,19 +6,18 @@ describe '/<endpoint>' do
   end
 
   after :each do
-    Process.kill('SIGKILL', @@pid)
+    HttpSimulator.stop_daemon!
   end
 
   it 'sets up an endpoint for each registered endpoint' do
-    HttpSimulator.register_endpoint 'GET', '/hi', ''
-    HttpSimulator.register_endpoint 'POST', '/bye', ''
+    HttpSimulator.register_endpoint 'GET', '/foo', ''
+    HttpSimulator.register_endpoint 'POST', '/bar', ''
+    HttpSimulator.run_daemon!(port: 6565)
 
-    start_simulator
-
-    resp = HTTParty.get('http://localhost:6565/hi')
+    resp = HTTParty.get('http://localhost:6565/foo')
     expect(resp.code).to eq 200
 
-    resp = HTTParty.post('http://localhost:6565/bye', :body => '')
+    resp = HTTParty.post('http://localhost:6565/bar', :body => '')
     expect(resp.code).to eq 200
   end
 end

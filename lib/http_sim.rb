@@ -1,5 +1,7 @@
 require 'sinatra/base'
 
+require 'httparty'
+
 class Endpoint
   attr_reader :method, :path, :default_response, :response
   attr_accessor :requests
@@ -22,6 +24,8 @@ class Endpoint
 end
 
 module HttpSimulator
+  @@pid = false
+
   def self.read_file(path)
     lines = []
     File.open(path, 'r') do |f|
@@ -40,6 +44,8 @@ module HttpSimulator
   @@endpoints = []
 
   def self.run!(port: 4567)
+    check_if_port_in_use(port)
+
     Sinatra::Base.get '/' do
       ERB.new(@@erb_files[:index]).result binding
     end
@@ -49,6 +55,58 @@ module HttpSimulator
 
       include HttpSimulator
     }.run!
+  end
+
+  def self.run_daemon!(port: 4567, max_wait_seconds: 5)
+    check_if_port_in_use(port)
+
+    Sinatra::Base.get '/' do
+      ERB.new(@@erb_files[:index]).result binding
+    end
+
+    @@pid = Process.fork do
+      Class.new(Sinatra::Base) {
+        set :port, port
+
+        include HttpSimulator
+      }.run!
+    end
+
+    wait_for_start(port, max_wait_seconds)
+
+    at_exit do
+      Process.kill 'SIGKILL', @@pid
+    end
+
+    @@pid
+  end
+
+  def self.stop_daemon!
+    Process.kill('SIGKILL', @@pid) if @@pid
+  end
+
+  def self.wait_for_start(port, max_wait_seconds)
+    wait_count = 0
+    while wait_count < max_wait_seconds * 4
+      begin
+        HTTParty.get("http://localhost:#{port}/")
+        return
+      rescue Errno::ECONNREFUSED
+        wait_count += 1
+        sleep 0.25
+      end
+    end
+
+    raise "Simulators failed to start - timed out after #{max_wait_seconds} seconds!"
+  end
+
+  def self.check_if_port_in_use(port)
+    begin
+      HTTParty.get("http://localhost:#{port}/")
+      raise "Port #{port} already in use"
+    rescue Errno::ECONNREFUSED
+      # ignored
+    end
   end
 
   def self.reset_endpoints
