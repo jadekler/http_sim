@@ -52,24 +52,18 @@ module HttpSimulator
 
     Class.new(Sinatra::Base) {
       set :port, port
+      set :logging, false
 
       include HttpSimulator
     }.run!
   end
 
-  def self.run_daemon!(port: 4567, max_wait_seconds: 5)
-    check_if_port_in_use(port)
-
-    Sinatra::Base.get '/' do
-      ERB.new(@@erb_files[:index]).result binding
-    end
-
+  def self.run_daemon!(port: 4567, max_wait_seconds: 5, log_file: 'http_sim_log.log')
     @@pid = Process.fork do
-      Class.new(Sinatra::Base) {
-        set :port, port
-
-        include HttpSimulator
-      }.run!
+      $stdout.reopen(log_file, 'w')
+      $stdout.sync = true
+      $stderr.reopen($stdout)
+      run!(port: port)
     end
 
     wait_for_start(port, max_wait_seconds)
