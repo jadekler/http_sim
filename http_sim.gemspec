@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'http_sim'
-  spec.version       = '0.0.1'
+  spec.version       = '0.0.2'
   spec.authors       = ['Jean de Klerk']
   spec.email         = ['jadekler@gmail.com']
   spec.summary       = 'Simulate your external HTTP integrations.'

@@ -17,10 +17,10 @@ Simulate your external HTTP integrations.
     
     HttpSimulator.register_endpoint 'GET', '/hi', read_file('fixtures/some_page.html')
     HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_response.json')
-    HttpSimulator.run!
+    HttpSimulator.run!(port:6565)
     ```
     
-1. The endpoints `GET /hi` and `POST /bye` are now set up. Visit `/` to see an index of running simulators and their helpers.
+1. The endpoints `GET /hi` and `POST /bye` are now set up. Visit `http://localhost:6565/` to see an index of running simulators and their helpers.
 
 ## Contributing
 

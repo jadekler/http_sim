@@ -39,12 +39,14 @@ module HttpSimulator
   }
   @@endpoints = []
 
-  def self.run!
+  def self.run!(port: 4567)
     Sinatra::Base.get '/' do
       ERB.new(@@erb_files[:index]).result binding
     end
 
     Class.new(Sinatra::Base) {
+      set :port, port
+
       include HttpSimulator
     }.run!
   end
