@@ -75,8 +75,9 @@ module HttpSimulator
     @@pid
   end
 
-  def self.stop_daemon!
+  def self.stop_daemon!(port: 4567, max_wait_seconds: 5)
     Process.kill('SIGKILL', @@pid) if @@pid
+    wait_for_stop(port, max_wait_seconds)
   end
 
   def self.wait_for_start(port, max_wait_seconds)
@@ -92,6 +93,21 @@ module HttpSimulator
     end
 
     raise "Simulators failed to start - timed out after #{max_wait_seconds} seconds!"
+  end
+
+  def self.wait_for_stop(port, max_wait_seconds)
+    wait_count = 0
+    while wait_count < max_wait_seconds * 4
+      begin
+        HTTParty.get("http://localhost:#{port}/")
+        wait_count += 1
+        sleep 0.25
+      rescue Errno::ECONNREFUSED
+        return
+      end
+    end
+
+    raise "Simulators failed to stop - timed out after #{max_wait_seconds} seconds!"
   end
 
   def self.check_if_port_in_use(port)
@@ -143,7 +159,11 @@ module HttpSimulator
     end
 
     Sinatra::Base.get "#{endpoint.path}/response" do
-      ERB.new(@@erb_files[:response]).result binding
+      if env.key?('CONTENT_TYPE') && env['CONTENT_TYPE'] && env['CONTENT_TYPE'].include?('json')
+        endpoint.response
+      else
+        ERB.new(@@erb_files[:response]).result binding
+      end
     end
 
     Sinatra::Base.put "#{endpoint.path}/response" do
@@ -155,8 +175,11 @@ module HttpSimulator
     end
 
     Sinatra::Base.get "#{endpoint.path}/requests" do
-      @endpoint = endpoint
-      ERB.new(@@erb_files[:request]).result binding
+      if env.key?('CONTENT_TYPE') && env['CONTENT_TYPE'] && env['CONTENT_TYPE'].include?('json')
+        endpoint.requests.to_json
+      else
+        ERB.new(@@erb_files[:request]).result binding
+      end
     end
 
     Sinatra::Base.delete "#{endpoint.path}/requests" do
