@@ -170,6 +170,12 @@ module HttpSimulator
       endpoint.response = request.body.read
     end
 
+    Sinatra::Base.post "#{endpoint.path}/response" do
+      new_response = request.body.read.sub 'response=', ''
+      endpoint.response = new_response
+      redirect "#{endpoint.path}/response"
+    end
+
     Sinatra::Base.delete "#{endpoint.path}/response" do
       endpoint.response = endpoint.default_response
     end

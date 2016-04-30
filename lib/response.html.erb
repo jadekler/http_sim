@@ -12,5 +12,12 @@
     <h2>Response for: <%= endpoint.method %> <%= endpoint.path %></h2>
 
     <div><%= endpoint.response %></div>
+
+    <h2>Change response</h2>
+
+    <form action="<%= endpoint.path %>/response" method="post">
+      <textarea name="response"></textarea>
+      <input type="submit">
+    </form>
   </body>
 </html>
