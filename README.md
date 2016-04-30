@@ -15,8 +15,8 @@ Simulate your external HTTP integrations.
     ```ruby
     require 'http_sim'
     
-    HttpSimulator.register_endpoint 'GET', '/hi', read_file('fixtures/some_page.html')
-    HttpSimulator.register_endpoint 'POST', '/bye', read_file('fixtures/some_response.json')
+    HttpSimulator.register_endpoint 'GET', '/hi', '{"some_json": true}'
+    HttpSimulator.register_endpoint 'POST', '/bye', '<html><body>some html</body></html>'
     HttpSimulator.run!(port:6565)
     ```
     
