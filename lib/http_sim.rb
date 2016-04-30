@@ -3,8 +3,8 @@ require 'sinatra/base'
 require 'httparty'
 
 class Endpoint
-  attr_reader :method, :path, :default_response, :response
-  attr_accessor :requests
+  attr_reader :method, :path, :default_response
+  attr_accessor :requests, :response
 
   @@supported_methods = ['GET', 'PUT', 'PATCH', 'POST', 'DELETE']
 
@@ -103,6 +103,7 @@ module HttpSimulator
     end
   end
 
+  # TODO: Should this just be 'reset'?
   def self.reset_endpoints
     @@endpoints = []
   end

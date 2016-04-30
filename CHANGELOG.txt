@@ -3,3 +3,4 @@ Version 0.0.2 Allow changing port
 Version 0.0.3 Requests to endpoints are recorded and listed at endpoint's /request endpoint
 Version 0.0.4 Added run_daemon!, stop_daemon!, and wait_for_start methods
 Version 0.0.5 run_daemon! now writes to a (configurable) log file
+Version 0.0.6 PUT and DELETE endpoints now generated for /<endpoint>/response
