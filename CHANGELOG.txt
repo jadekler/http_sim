@@ -6,3 +6,4 @@ Version 0.0.5 run_daemon! now writes to a (configurable) log file
 Version 0.0.6 PUT and DELETE endpoints now generated for /<endpoint>/response
 Version 0.0.7 GET, PUT, DELETE /response endpoints now working
 Version 1.0.0 Responses can be changed at /<endpoint>/response. All initial features are now complete
+Version 1.0.1 Fixed bug wherein responses were always using default instead of set response

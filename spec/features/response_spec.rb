@@ -4,7 +4,7 @@ describe 'responses' do
   before :each do
     HttpSimulator.reset_endpoints
 
-    HttpSimulator.register_endpoint 'POST', '/hi', 'this is hi response'
+    HttpSimulator.register_endpoint 'GET', '/hi', 'this is hi response'
     HttpSimulator.register_endpoint 'POST', '/bye', 'this is bye response'
 
     HttpSimulator.run_daemon!(port: test_port)
@@ -44,12 +44,9 @@ describe 'responses' do
     end
 
     it 'PUT /<endpoint>/response alters response for endpoint' do
-      resp = json_get '/hi/response'
-      expect(resp.body).to eq 'this is hi response'
-
+      expect_response '/hi', 'this is hi response'
       put '/hi/response', 'this is some new response'
-      resp = json_get '/hi/response'
-      expect(resp.body).to eq 'this is some new response'
+      expect_response '/hi', 'this is some new response'
     end
 
     xit '.set_response alters response for endpoint' # TODO
@@ -66,15 +63,19 @@ describe 'responses' do
 
     it 'DELETE /<endpoint>/response resets response for endpoint' do
       put '/hi/response', 'this is some new response'
-      resp = json_get '/hi/response'
-      expect(resp.body).to eq 'this is some new response'
-
+      expect_response '/hi', 'this is some new response'
       delete '/hi/response'
-
-      resp = json_get '/hi/response'
-      expect(resp.body).to eq 'this is hi response'
+      expect_response '/hi', 'this is hi response'
     end
 
     xit '.reset_response resets response for endpoint' # TODO
+  end
+
+  def expect_response(endpoint, response)
+    resp = json_get "#{endpoint}/response"
+    expect(resp.body).to eq response
+
+    resp = get endpoint
+    expect(resp.body).to include response
   end
 end

@@ -134,27 +134,27 @@ module HttpSimulator
       when 'GET'
         Sinatra::Base.get endpoint.path do
           endpoint.add_request request.body.read
-          endpoint.default_response
+          endpoint.response
         end
       when 'PUT'
         Sinatra::Base.put endpoint.path do
           endpoint.add_request request.body.read
-          endpoint.default_response
+          endpoint.response
         end
       when 'PATCH'
         Sinatra::Base.patch endpoint.path do
           endpoint.add_request request.body.read
-          endpoint.default_response
+          endpoint.response
         end
       when 'POST'
         Sinatra::Base.post endpoint.path do
           endpoint.add_request request.body.read
-          endpoint.default_response
+          endpoint.response
         end
       when 'DELETE'
         Sinatra::Base.delete endpoint.path do
           endpoint.add_request request.body.read
-          endpoint.default_response
+          endpoint.response
         end
     end
 
@@ -167,7 +167,8 @@ module HttpSimulator
     end
 
     Sinatra::Base.put "#{endpoint.path}/response" do
-      endpoint.response = request.body.read
+      new_response = request.body.read
+      endpoint.response = new_response
     end
 
     Sinatra::Base.post "#{endpoint.path}/response" do
