@@ -2,16 +2,18 @@ require 'spec_helper'
 
 describe '/<endpoint>' do
   before :each do
-    HttpSimulator.reset_endpoints
+    @sim = HttpSimulator::Server.new
 
-    HttpSimulator.register_endpoint 'GET', '/foo', 'something'
-    HttpSimulator.register_endpoint 'POST', '/bar', 'something else'
+    @sim.reset_endpoints
 
-    HttpSimulator.run_daemon!(port: test_port)
+    @sim.register_endpoint 'GET', '/foo', 'something'
+    @sim.register_endpoint 'POST', '/bar', 'something else'
+
+    @sim.run_daemon!(port: test_port)
   end
 
   after :each do
-    HttpSimulator.stop_daemon!(port: test_port)
+    @sim.stop_daemon!(port: test_port)
   end
 
   it 'sets up an endpoint for each registered endpoint' do
