@@ -34,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @@endpoints.each do |endpoint| %>
+        <% endpoints.each do |endpoint| %>
           <tr>
             <td><%= endpoint.method %> <%= endpoint.path %></td>
             <td><a href="<%= endpoint.path %>/response"><%= endpoint.path %>/response</a></td>

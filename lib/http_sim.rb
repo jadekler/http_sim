@@ -18,9 +18,14 @@ module HttpSimulator
     def run!(port: 4567)
       check_if_port_in_use(port)
 
+      erb_files = @erb_files
+      endpoints = @endpoints
+
       Sinatra::Base.get '/' do
-        ERB.new(@erb_files[:index]).result binding
+        ERB.new(erb_files[:index]).result binding
       end
+
+      p '*'*80
 
       Class.new(Sinatra::Base) {
         set :port, port
