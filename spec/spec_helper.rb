@@ -11,22 +11,26 @@ def test_port
   6565
 end
 
-def get(path)
-  HTTParty.get("http://localhost:#{test_port}#{path}")
+def secondary_test_port
+  6566
 end
 
-def json_get(path)
-  HTTParty.get("http://localhost:#{test_port}#{path}", :headers => {'Content-Type' => 'application/json'})
+def get(path, port = test_port)
+  HTTParty.get("http://localhost:#{port}#{path}")
 end
 
-def post(path, body)
-  HTTParty.post("http://localhost:#{test_port}#{path}", :body => body)
+def json_get(path, port = test_port)
+  HTTParty.get("http://localhost:#{port}#{path}", :headers => {'Content-Type' => 'application/json'})
 end
 
-def put(path, body)
-  HTTParty.put("http://localhost:#{test_port}#{path}", :body => body)
+def post(path, body, port = test_port)
+  HTTParty.post("http://localhost:#{port}#{path}", :body => body)
 end
 
-def delete(path)
-  HTTParty.delete("http://localhost:#{test_port}#{path}")
+def put(path, body, port = test_port)
+  HTTParty.put("http://localhost:#{port}#{path}", :body => body)
+end
+
+def delete(path, port = test_port)
+  HTTParty.delete("http://localhost:#{port}#{path}")
 end
