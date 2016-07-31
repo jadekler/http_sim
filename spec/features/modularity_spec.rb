@@ -8,43 +8,56 @@ describe 'modularity' do
 
       @sim1.reset_endpoints
       @sim2.reset_endpoints
+    end
 
-      @sim1.run_daemon!(port: test_port)
-      @sim2.run_daemon!(port: secondary_test_port)
+    describe 'with same endpoints' do
+      before :each do
+        [@sim1, @sim2].each do |sim|
+          sim.reset_endpoints
+          sim.register_endpoint 'GET', '/foo', 'something one'
+        end
+
+        @sim1.run_daemon!(port: test_port)
+        @sim2.run_daemon!(port: secondary_test_port)
+      end
+
+      it 'sets each endpoint up separately with same endpoints' do
+        resp = get '/foo', test_port
+        expect(resp.code).to eq 200
+
+        resp = get '/foo', secondary_test_port
+        expect(resp.code).to eq 200
+      end
+    end
+
+    describe 'with different endpoints' do
+      before :each do
+        @sim1.register_endpoint 'GET', '/foo', 'something one'
+        @sim2.register_endpoint 'GET', '/bar', 'something two'
+
+        @sim1.run_daemon!(port: test_port)
+        @sim2.run_daemon!(port: secondary_test_port)
+      end
+
+      it 'sets each endpoint up separately with different endpoints' do
+        resp = get '/foo', test_port
+        expect(resp.code).to eq 200
+
+        resp = get '/bar', test_port
+        expect(resp.code).to eq 404
+
+        resp = get '/foo', secondary_test_port
+        expect(resp.code).to eq 404
+
+        resp = get '/bar', secondary_test_port
+        expect(resp.code).to eq 200
+      end
+
     end
 
     after :each do
       @sim1.stop_daemon!(port: test_port)
       @sim2.stop_daemon!(port: secondary_test_port)
-    end
-
-    it 'sets each endpoint up separately with same endpoints' do
-      [@sim1, @sim2].each do |sim|
-        sim.register_endpoint 'GET', '/foo', 'something one'
-      end
-
-      resp = get '/foo', test_port
-      expect(resp.code).to eq 200
-
-      resp = get '/foo', secondary_test_port
-      expect(resp.code).to eq 200
-    end
-
-    it 'sets each endpoint up separately with different endpoints' do
-      @sim1.register_endpoint 'GET', '/foo', 'something one'
-      @sim2.register_endpoint 'GET', '/bar', 'something two'
-
-      resp = get '/foo', test_port
-      expect(resp.code).to eq 200
-
-      resp = get '/foo', secondary_test_port
-      expect(resp.code).to eq 404
-
-      resp = get '/bar', secondary_test__port
-      expect(resp.code).to eq 200
-
-      resp = get '/bar', test_port
-      expect(resp.code).to eq 404
     end
   end
 
