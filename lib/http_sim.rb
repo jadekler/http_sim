@@ -25,8 +25,6 @@ module HttpSimulator
       Class.new(Sinatra::Base) {
         set :port, port
         set :logging, false
-
-        include HttpSimulator
       }.run!
     end
 
