@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe 'responses' do
   before :each do
-    HttpSimulator.reset_endpoints
+    @sim = HttpSimulator::Server.new
 
-    HttpSimulator.register_endpoint 'GET', '/hi', 'this is hi response'
-    HttpSimulator.register_endpoint 'POST', '/bye', 'this is bye response'
+    @sim.register_endpoint 'GET', '/hi', 'this is hi response'
+    @sim.register_endpoint 'POST', '/bye', 'this is bye response'
 
-    HttpSimulator.run_daemon!(port: test_port)
+    @sim.run_daemon!(port: test_port)
   end
 
   after :each do
-    HttpSimulator.stop_daemon!(port: test_port)
+    @sim.stop_daemon!(port: test_port)
   end
 
   describe 'getting response' do

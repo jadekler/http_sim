@@ -26,11 +26,11 @@ module HttpSimulator
         set :port, port
         set :logging, false
 
-        # include HttpSimulator
+        include HttpSimulator
       }.run!
     end
 
-    def run_daemon!(port: 4567, max_wait_seconds: 5, log_file: 'http_sim_log.log')
+    def run_daemon!(port: 4567, max_wait_seconds: 5, log_file: 'http_sim.log')
       @pid = Process.fork do
         $stdout.reopen(log_file, 'w')
         $stdout.sync = true
@@ -88,7 +88,7 @@ module HttpSimulator
     end
 
     def register_endpoint(method, path, default_response)
-      raise '/ is a reserved path' if path == '/'
+      raise '/ is a reserved path' if path == '/' # TODO: This sucks and we should fix it
 
       endpoint = Endpoint.new(method, path, default_response)
       @endpoints.push endpoint
@@ -121,11 +121,13 @@ module HttpSimulator
           end
       end
 
+      erb_files = @erb_files # TODO: Weird. Inside Sinatra::Base we don't have access to @erb_files
+
       Sinatra::Base.get "#{endpoint.path}/response" do
         if env.key?('CONTENT_TYPE') && env['CONTENT_TYPE'] && env['CONTENT_TYPE'].include?('json')
           endpoint.response
         else
-          ERB.new(@erb_files[:response]).result binding
+          ERB.new(erb_files[:response]).result binding
         end
       end
 
@@ -148,7 +150,7 @@ module HttpSimulator
         if env.key?('CONTENT_TYPE') && env['CONTENT_TYPE'] && env['CONTENT_TYPE'].include?('json')
           endpoint.requests.to_json
         else
-          ERB.new(@erb_files[:request]).result binding
+          ERB.new(erb_files[:request]).result binding
         end
       end
 
