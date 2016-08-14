@@ -3,27 +3,26 @@ require 'httparty'
 require_relative './sim'
 
 module HttpSimulator
-  def self.start_sim(endpoints)
-    configuration = Sim.new([])
-    rackapp endpoints
+  def self.start_sim(port: 4567)
+    app_wrapper = Class.new(Sim)
+
+    self.run_daemon(app: app_wrapper)
+
+    app_wrapper.new.helpers
   end
 
   private
 
-  def self.rackapp(endpoints)
-    Class.new(Sim) do
-    end
-  end
-
-  def self.run_daemon
+  def self.run_daemon(app:, log_file: 'http_sim_log.log')
     @pid = Process.fork do
       $stdout.reopen(log_file, 'w')
       $stdout.sync = true
       $stderr.reopen($stdout)
-      run!(port: port)
+      app.run!
     end
 
-    wait_for_start(port, max_wait_seconds)
+    # wait_for_start(port, max_wait_seconds)
+    sleep 1
 
     at_exit do
       Process.kill 'SIGKILL', @pid

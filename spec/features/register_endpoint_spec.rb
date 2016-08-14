@@ -2,14 +2,13 @@ require 'spec_helper'
 
 describe '/<endpoint>' do
   before :each do
-    @sim = HttpSimulator.start_sim []
-    @sim.run!
+    @sim = HttpSimulator.start_sim(port: test_port)
 
     # @sim.reset_endpoints
-    #
-    # @sim.register_endpoint 'GET', '/foo', 'something'
-    # @sim.register_endpoint 'POST', '/bar', 'something else'
-    #
+
+    @sim.register_endpoint(method: 'GET', endpoint: '/foo', body: 'something')
+    @sim.register_endpoint(method: 'POST', endpoint: '/bar', body: 'something else')
+
     # @sim.run_daemon!(port: test_port)
   end
 
