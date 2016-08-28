@@ -28,7 +28,7 @@ module HttpSimulator
 
     self.run_daemon(app: app_wrapper)
 
-    app_wrapper.new.helpers
+    app_wrapper
   end
 
   private
