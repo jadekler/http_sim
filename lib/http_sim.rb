@@ -3,7 +3,7 @@ require 'httparty'
 require_relative './sim'
 
 module HttpSimulator
-  def self.start_sim(port: 4567)
+  def self.start_sim(port: 4567) # TODO: Use this port
     app_wrapper = Class.new(Sim)
 
     self.run_daemon(app: app_wrapper)
