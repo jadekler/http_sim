@@ -4,22 +4,22 @@ module HttpSimulator
   class Sim < Sinatra::Base
     set :port, 6565
 
-    def register_endpoint(method: 'GET', path: '/default_endpoint', body: 'Default body')
-      @endpoints = [] if @endpoints == nil
-
-      @endpoints.push({method: method, path: path, body: body})
+    def self.endpoints(endpoints = nil)
+      return @endpoints if @endpoints
+      @endpoints = endpoints
     end
 
     get '/*' do
       p '*'*80
       p @endpoints
+      p self.class.endpoints
       p '*'*80
 
-      ''
+      if contains_endpoint('GET', request.path)
+        'boom'
+      end
 
-      # if contains_endpoint('GET', request.path)
-      #   'boom'
-      # end
+      'hey'
     end
 
     post '/*' do
